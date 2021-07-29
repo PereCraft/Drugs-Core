@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package perecraft.drugscore.listeners;
 
 import org.bukkit.Material;
@@ -19,20 +14,18 @@ public class InventoryListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		
-		if((e.getCurrentItem() == null) || (e.getCurrentItem().getType()==Material.AIR))
-            return;
-		
-		if(e.getClickedInventory().getName()=="§2Drug shop") {
-			e.setCancelled(true);
-			
-			if(e.getCurrentItem().getItemMeta().getDisplayName().contains(DrugsManager.cocainename)) {
-				
-			}
-			
-			else if(e.getCurrentItem().getItemMeta().getDisplayName().contains(DrugsManager.weedname)) {
-				
-			}
-		}
+            if((e.getCurrentItem() == null) || (e.getCurrentItem().getType() == Material.AIR))
+                return;
+
+            if(e.getClickedInventory().getName() == "§2Drug shop") {
+                e.setCancelled(true);
+
+                if(e.getCurrentItem().getItemMeta().getDisplayName().contains(DrugsManager.cocainename)) {
+                    // TODO
+                } else if(e.getCurrentItem().getItemMeta().getDisplayName().contains(DrugsManager.weedname)) {
+                    // TODO
+                }
+            }
 		
 	}
 	

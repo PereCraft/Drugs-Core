@@ -1,0 +1,43 @@
+drugs:
+ cocaine:
+  material: SUGAR
+  short: 2
+  displayname: "&f&lCocaine"
+  lore:
+  - "&7Ti da un po' di carica!"
+  sell-price: 50
+  buy-price: 100
+ weed:
+  material: INK_SAC
+  short: 0
+  displayname: "&f&lCocaine"
+  lore:
+  - "Ti da un po' di carica!"
+  sell-price: 50
+  buy-price: 100
+seeds:
+ cocaine:
+  material: PUMPKIN_SEEDS
+  short: 0
+  displayname: "&7&lCocaine seeds"
+  lore:
+  - "&7Ricorda di zappare il terreno."
+custom-drops:
+ '1':
+  entity: ZOMBIE
+  override-drops: false
+  drops:
+   '1':
+    drug: 'weed:seed'
+    min-amount: 1
+    max-amount: 2
+    drop-chance: 35 #%
+ '2':
+  entity: CREEPER
+  override-drops: false
+  drops:
+   '1':
+    drug: 'meth:related.efedrina'
+    min-amount: 1
+    max-amount: 2
+    drop-chance: 5 #%

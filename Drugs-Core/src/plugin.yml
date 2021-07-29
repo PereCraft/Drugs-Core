@@ -1,0 +1,24 @@
+name: Drugs-Core
+main: perecraft.drugs.Main
+depends: [Vault]
+api-version: 1.12
+version: 0.1
+author: PereCraft
+description: Plugin Drugs per PereCraft
+commands:
+     drugs:
+      description: main command
+      aliases: [drug, dr]
+permissions:
+  drugs.give:
+    description: Permette di usare /dr give
+    default: op
+  drugs.giveseed:
+    description: Permette di usare /dr giveseed
+    default: op
+  drugs.reload:
+    description: Permette di usare /dr reload
+    default: op
+  drugs.refresh:
+    description: Permette di usare /dr refresh
+    default: op
