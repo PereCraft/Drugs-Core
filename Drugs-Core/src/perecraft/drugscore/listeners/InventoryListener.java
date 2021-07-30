@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+// FIX: Questi import non esistono
 //import net.milkbowl.vault.Vault;
 //import net.milkbowl.vault.VaultEco;
 import perecraft.drugscore.manager.DrugsManager;

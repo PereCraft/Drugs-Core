@@ -51,22 +51,22 @@ public class DrugsManager {
 
     public static void GiveDrugSeed(CommandSender sender, Player target, String drug, int amount) {
 
-            if(drug.equalsIgnoreCase("cocaine")) {
-                ItemStack cocaineseedsitem = new ItemStack(Material.PUMPKIN_SEEDS, amount, (short) 0);
-                ItemMeta cocaineseedsmeta = cocaineseedsitem.getItemMeta();
+        if(drug.equalsIgnoreCase("cocaine")) {
+            ItemStack cocaineseedsitem = new ItemStack(Material.PUMPKIN_SEEDS, amount, (short) 0);
+            ItemMeta cocaineseedsmeta = cocaineseedsitem.getItemMeta();
 
-                cocaineseedsmeta.setDisplayName(cocaineseedname);
-                cocaineseedsmeta.setLore(cocaineseedlore);
-                cocaineseedsitem.setItemMeta(cocaineseedsmeta);
+            cocaineseedsmeta.setDisplayName(cocaineseedname);
+            cocaineseedsmeta.setLore(cocaineseedlore);
+            cocaineseedsitem.setItemMeta(cocaineseedsmeta);
 
-                target.getInventory().addItem(cocaineseedsitem);
-                target.updateInventory();
-            } else {
-                sender.sendMessage("§4Errore: §cSeme non valido!");
-                return;
-            }
+            target.getInventory().addItem(cocaineseedsitem);
+            target.updateInventory();
+        } else {
+            sender.sendMessage("§4Errore: §cSeme non valido!");
+            return;
+        }
 
-            sender.sendMessage("§aGivvato x" + amount + drug + "§7 a §e" + target.getName());
+        sender.sendMessage("§aGivvato x" + amount + drug + "§7 a §e" + target.getName());
 
     }
 	

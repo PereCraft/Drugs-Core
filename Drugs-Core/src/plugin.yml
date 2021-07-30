@@ -1,5 +1,5 @@
 name: Drugs-Core
-main: perecraft.drugs.Main
+main: perecraft.drugscore.DrugsCore
 depends: [Vault]
 api-version: 1.12
 version: 0.1

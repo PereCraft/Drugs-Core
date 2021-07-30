@@ -1,27 +1,30 @@
+# TODO: Aggiungere nome effetti
 drugs:
  cocaine:
   material: SUGAR
   short: 2
   displayname: "&f&lCocaine"
   lore:
-  - "&7Ti da un po' di carica!"
+    - "&7Ti da un po' di carica!"
   sell-price: 50
   buy-price: 100
  weed:
-  material: INK_SAC
+  material: INK_SACK
   short: 0
-  displayname: "&f&lCocaine"
+  displayname: "&f&lWeed"
   lore:
-  - "Ti da un po' di carica!"
+    - "Ti da un po' di carica!"
   sell-price: 50
   buy-price: 100
+  
 seeds:
  cocaine:
   material: PUMPKIN_SEEDS
   short: 0
   displayname: "&7&lCocaine seeds"
   lore:
-  - "&7Ricorda di zappare il terreno."
+    - "&7Ricorda di zappare il terreno."
+    
 custom-drops:
  '1':
   entity: ZOMBIE

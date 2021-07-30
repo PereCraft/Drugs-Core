@@ -1,11 +1,17 @@
 package perecraft.drugscore;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
 import perecraft.drugscore.listeners.DrugConsumeListener;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import perecraft.drugscore.commands.MainCommand;
+import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.listeners.*;
+import perecraft.drugscore.persistence.ConfigurationFile;
 
 public class DrugsCore extends JavaPlugin {
 
@@ -17,7 +23,19 @@ public class DrugsCore extends JavaPlugin {
         plugin=this;
         version=0.1;
 
-        saveDefaultConfig();
+        //saveDefaultConfig();
+        List<Drug> drugsList = null;
+        try {
+            drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
+        } catch(IOException ex) {
+            Bukkit.getLogger().log(Level.WARNING, "Impossibile leggere il file di configurazione.{0}", ex.getMessage());
+            Bukkit.getLogger().log(Level.SEVERE, ex.getMessage());
+            onDisable();
+        }
+
+        Bukkit.getLogger().info("Droghe caricate: ");
+        drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
+        
         getCommand("drugs").setExecutor(new MainCommand());
 
         Bukkit.getPluginManager().registerEvents(new MobListener(), this);
@@ -26,6 +44,7 @@ public class DrugsCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
 
         checkEconomy();
+        Bukkit.getLogger().info("Drugs-Core attivato");
     }
 
     @Override
