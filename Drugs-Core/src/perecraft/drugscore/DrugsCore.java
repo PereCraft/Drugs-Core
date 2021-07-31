@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.logging.Level;
 import perecraft.drugscore.listeners.DrugConsumeListener;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import perecraft.drugscore.commands.MainCommand;
 import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.Seed;
 import perecraft.drugscore.listeners.*;
 import perecraft.drugscore.persistence.ConfigurationFile;
 
@@ -25,8 +25,10 @@ public class DrugsCore extends JavaPlugin {
 
         //saveDefaultConfig();
         List<Drug> drugsList = null;
+        List<Seed> seedsList = null;
         try {
             drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
+            seedsList = ConfigurationFile.getConfigFile().getSeedElements();
         } catch(IOException ex) {
             Bukkit.getLogger().log(Level.WARNING, "Impossibile leggere il file di configurazione.{0}", ex.getMessage());
             Bukkit.getLogger().log(Level.SEVERE, ex.getMessage());
@@ -35,6 +37,9 @@ public class DrugsCore extends JavaPlugin {
 
         Bukkit.getLogger().info("Droghe caricate: ");
         drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
+        
+        Bukkit.getLogger().info("Semi caricati: ");
+        seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
         
         getCommand("drugs").setExecutor(new MainCommand());
 

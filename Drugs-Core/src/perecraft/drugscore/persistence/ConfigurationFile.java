@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import perecraft.drugscore.DrugsCore;
 import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.Seed;
 
 public class ConfigurationFile {
     
@@ -106,4 +107,28 @@ public class ConfigurationFile {
         return list;
     }
     
+    public List<Seed> getSeedElements() {
+        List<Seed> list = new ArrayList<>();
+        
+        configFile.getConfigurationSection("seeds").getKeys(false).forEach((String i) -> {
+            String index = "seeds."+i;
+            
+            String material = configFile.getString(index+".material");
+            short shortnum = Short.parseShort(configFile.getString(index+".short"));           
+            String displayName = configFile.getString(index+".displayname");            
+
+            List<String> lores = new ArrayList<>();
+            configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore));
+            
+            list.add(new Seed(
+                    i, 
+                    material,
+                    shortnum,
+                    displayName,
+                    lores
+            ));
+        });
+        
+        return list;
+    }
 }
