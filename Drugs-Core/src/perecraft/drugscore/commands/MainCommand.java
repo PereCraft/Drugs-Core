@@ -54,7 +54,7 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
 
-                DrugsManager.GiveDrug(sender, target, args[2], amount);
+                DrugsManager.giveDrug(sender, target, args[2], amount);
 
             } else if(args[0].equalsIgnoreCase("giveseed")) {
 
@@ -80,7 +80,7 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
 
-                DrugsManager.GiveDrugSeed(sender, target, args[2], amount);
+                DrugsManager.giveDrugSeed(sender, target, args[2], amount);
 
             } else if(args[0].equalsIgnoreCase("reload")) {
 

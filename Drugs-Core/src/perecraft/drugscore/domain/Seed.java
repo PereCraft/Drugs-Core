@@ -2,6 +2,9 @@ package perecraft.drugscore.domain;
 
 import java.util.List;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 
 public class Seed {
@@ -59,6 +62,18 @@ public class Seed {
 
     public void setLore(List<String> lore) {
         this.lore = lore;
+    }
+    
+    public void giveItem(Player target, int amount) {
+        ItemStack item = new ItemStack(material, amount, shortnum);
+        ItemMeta meta = item.getItemMeta();
+        
+        meta.setDisplayName(displayName);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        
+        target.getInventory().addItem(item);
+        target.updateInventory();
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Drug {
@@ -15,30 +16,32 @@ public class Drug {
     private Material material;
     private short shortnum;
     private List<String> lore;
-    private List<PotionEffectType> goodEffects;
+    private List<PotionEffect> goodEffects;
     // TODO: Aggiungere badEffects
     private Sound sound;
     private int amplifier;
     private int sellPrice;
     private int buyPrice;
+    private String message;
 
     public Drug() {}
     
-    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String sound, int sellPrice, int buyPrice) {
+    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String sound, int sellPrice, int buyPrice, String message) {
         this.id = id;
         this.displayName = displayName;        
         this.material = Material.matchMaterial(material);
         this.shortnum = shortnum;
         this.lore = lore;
-        
+                
         // Caricamento effetti
         this.goodEffects = new ArrayList<>();
         effects.forEach((String effect) -> {
-            this.goodEffects.add(PotionEffectType.getByName(effect));
+            this.goodEffects.add(new PotionEffect(PotionEffectType.getByName(effect), 600, 1));
         });
         
         this.sound = Sound.valueOf(sound);
         this.amplifier = 1;
+        this.message = message;
     }
 
     public String getId() {
@@ -81,11 +84,11 @@ public class Drug {
         this.lore = lore;
     }
 
-    public List<PotionEffectType> getGoodEffects() {
+    public List<PotionEffect> getGoodEffects() {
         return goodEffects;
     }
 
-    public void setGoodEffects(List<PotionEffectType> effects) {
+    public void setGoodEffects(List<PotionEffect> effects) {
         this.goodEffects = effects;
     }
 
@@ -120,11 +123,22 @@ public class Drug {
     public void setBuyPrice(int buyPrice) {
         this.buyPrice = buyPrice;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
     
     public void giveItem(Player target, int amount) {
         ItemStack item = new ItemStack(material, amount, shortnum);
         ItemMeta meta = item.getItemMeta();
         
+        System.out.println(Material.SUGAR);
+        
+        meta.setLocalizedName(id);
         meta.setDisplayName(displayName);
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -136,8 +150,7 @@ public class Drug {
     @Override
     public String toString() {
         String goodEffect = "";
-        // TODO: Rendere più figa la visione della lista elementi
-        goodEffect = goodEffects.stream().map(p -> p.getName()).reduce(goodEffect, String::concat);
+        // TODO: Visualizzare potion effect elementi
         
         return "Id: " + id + "\n " +
                 "Display name: " + displayName + "\n " +

@@ -68,18 +68,23 @@ public class ConfigurationFile {
         return configFile;
     }
 
+    public String getWarningMessage() {
+        System.out.println(configFile.getString("warning_message"));
+        return configFile.getString("warning_message");
+    }
+    
     public List<Drug> getDrugsElements() {
         List<Drug> list = new ArrayList<>();
         
         configFile.getConfigurationSection("drugs").getKeys(false).forEach((String i) -> {
             String index = "drugs." + i;
             
-            String displayName = configFile.getString(index+".displayname");            
+            String displayName = configFile.getString(index+".displayname").replace("&", "§");            
             String material = configFile.getString(index+".material");
             short shortnum = Short.parseShort(configFile.getString(index+".short"));           
 
             List<String> lores = new ArrayList<>();
-            configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore));
+            configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore.replace("&", "§")));
             
             // TODO: Aggiungere effetti
             List<String> effects = new ArrayList<>();
@@ -90,6 +95,7 @@ public class ConfigurationFile {
             String sound = configFile.getString(index+".sound");            
             int sellPrice = Integer.parseInt(configFile.getString(index+".sell-price"));
             int buyPrice = Integer.parseInt(configFile.getString(index+".buy-price"));
+            String message = configFile.getString(index+".message");
             
             list.add(new Drug(
                     i,
@@ -100,7 +106,8 @@ public class ConfigurationFile {
                     effects,
                     sound,
                     sellPrice,
-                    buyPrice
+                    buyPrice,
+                    message
             ));
         });
         
@@ -115,10 +122,10 @@ public class ConfigurationFile {
             
             String material = configFile.getString(index+".material");
             short shortnum = Short.parseShort(configFile.getString(index+".short"));           
-            String displayName = configFile.getString(index+".displayname");            
+            String displayName = configFile.getString(index+".displayname").replace("&", "§");            
 
             List<String> lores = new ArrayList<>();
-            configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore));
+            configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore.replace("&", "§")));
             
             list.add(new Seed(
                     i, 

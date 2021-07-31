@@ -11,6 +11,7 @@ import perecraft.drugscore.commands.MainCommand;
 import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
 import perecraft.drugscore.listeners.*;
+import perecraft.drugscore.manager.DrugsManager;
 import perecraft.drugscore.persistence.ConfigurationFile;
 
 public class DrugsCore extends JavaPlugin {
@@ -23,23 +24,26 @@ public class DrugsCore extends JavaPlugin {
         plugin=this;
         version=0.1;
 
-        //saveDefaultConfig();
         List<Drug> drugsList = null;
         List<Seed> seedsList = null;
+        String warningMessage;
         try {
             drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
             seedsList = ConfigurationFile.getConfigFile().getSeedElements();
+            DrugsManager.setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
         } catch(IOException ex) {
             Bukkit.getLogger().log(Level.WARNING, "Impossibile leggere il file di configurazione.{0}", ex.getMessage());
             Bukkit.getLogger().log(Level.SEVERE, ex.getMessage());
             onDisable();
         }
-
+        
         Bukkit.getLogger().info("Droghe caricate: ");
         drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
+        DrugsManager.setDrugsList(drugsList);
         
         Bukkit.getLogger().info("Semi caricati: ");
         seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
+        DrugsManager.setSeedsList(seedsList);
         
         getCommand("drugs").setExecutor(new MainCommand());
 

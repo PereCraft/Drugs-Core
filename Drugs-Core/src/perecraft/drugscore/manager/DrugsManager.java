@@ -1,73 +1,85 @@
 package perecraft.drugscore.manager;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import org.bukkit.Sound;
 
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.Seed;
+import perecraft.drugscore.manager.exception.DrugsManagerException;
 
 public class DrugsManager {
 
-    public static String cocainename = "§f§lCocaine";
-    public static List<String> cocainelore = Arrays.asList("§7Ti da un po' di carica");
-    public static String weedname = "§2§lWeed";
-    public static List<String> weedlore = Arrays.asList("§7Ti rigerera ma ti fa venire fame");
-    public static String cocaineseedname = "§7§lCocaine seeds";
-    public static List<String> cocaineseedlore = Arrays.asList("§7Serve per piantare una pianta di coca", "Ricorda di zappare il terreno!");
+    private static HashMap<String, Drug> drugsList = new HashMap<>();
+    private static HashMap<String, Seed> seedsList = new HashMap<>();
+    private static String warningMessage;
 
-    public static void GiveDrug(CommandSender sender, Player target, String drug, int amount) {
+    public static void giveDrug(CommandSender sender, Player target, String drugArg, int amount) {
 
-        if(drug.equalsIgnoreCase("cocaine")) {
-            ItemStack cocaineitem = new ItemStack(Material.SUGAR, amount, (short) 0);
-            ItemMeta cocainemeta = cocaineitem.getItemMeta();
-
-            cocainemeta.setDisplayName(cocainename);
-            cocainemeta.setLore(cocainelore);
-            cocaineitem.setItemMeta(cocainemeta);
-
-            target.getInventory().addItem(cocaineitem);
-            target.updateInventory();
-        } else if(drug.equalsIgnoreCase("weed")) {
-            ItemStack weeditem = new ItemStack(Material.INK_SACK, amount, (short) 2);
-            ItemMeta weedmeta = weeditem.getItemMeta();
-
-            weedmeta.setDisplayName(weedname);
-            weedmeta.setLore(weedlore);
-            weeditem.setItemMeta(weedmeta);
-
-            target.getInventory().addItem(weeditem);
-            target.updateInventory();
-        } else {
+        if(!drugsList.containsKey(drugArg.toLowerCase())) {
             sender.sendMessage("§4Errore: §cDroga non valida!");
             return;
         }
-
-        sender.sendMessage("§aGivvato x" + amount + drug + "§7 a §e" + target.getName());
+        
+        drugsList.get(drugArg.toLowerCase()).giveItem(target, amount);
+        sender.sendMessage("§aGivvato x" + amount + drugArg + "§7 a §e" + target.getName());
 
     }
 
-    public static void GiveDrugSeed(CommandSender sender, Player target, String drug, int amount) {
+    public static void giveDrugSeed(CommandSender sender, Player target, String seedArg, int amount) {
 
-        if(drug.equalsIgnoreCase("cocaine")) {
-            ItemStack cocaineseedsitem = new ItemStack(Material.PUMPKIN_SEEDS, amount, (short) 0);
-            ItemMeta cocaineseedsmeta = cocaineseedsitem.getItemMeta();
-
-            cocaineseedsmeta.setDisplayName(cocaineseedname);
-            cocaineseedsmeta.setLore(cocaineseedlore);
-            cocaineseedsitem.setItemMeta(cocaineseedsmeta);
-
-            target.getInventory().addItem(cocaineseedsitem);
-            target.updateInventory();
-        } else {
-            sender.sendMessage("§4Errore: §cSeme non valido!");
+        if(!seedsList.containsKey(seedArg.toLowerCase())) {
+            sender.sendMessage("§4Errore: §cDroga non valida!");
             return;
         }
+        
+        seedsList.get(seedArg.toLowerCase()).giveItem(target, amount);
+        sender.sendMessage("§aGivvato x" + amount + seedArg + "§7 a §e" + target.getName());
 
-        sender.sendMessage("§aGivvato x" + amount + drug + "§7 a §e" + target.getName());
-
+    }
+    
+    public static void setDrugsList(List<Drug> lists) {
+        lists.forEach((d) -> {
+            if(!drugsList.containsKey(d.getId()))
+                drugsList.put(d.getId(), d);
+        });
+    }
+    
+    public static void setSeedsList(List<Seed> lists) {
+        lists.forEach((d) -> {
+            if(!seedsList.containsKey(d.getId()))
+                seedsList.put(d.getId(), d);
+        });
+    }
+    
+    public static void setWarningMessage(String message) {
+        warningMessage = message;
+    }
+    
+    public static String getWarningMessage() {
+        return warningMessage;
+    }
+    
+    public static boolean checkDrug(String name) {
+        return drugsList.containsKey(name);
+    }
+    
+    public static List<PotionEffect> getEffects(String name) throws DrugsManagerException {
+        if(!drugsList.containsKey(name)) 
+            throw new DrugsManagerException();
+        
+        return drugsList.get(name).getGoodEffects();
+    }
+    
+    public static Sound getSound(String name) throws DrugsManagerException {
+        if(!drugsList.containsKey(name)) 
+            throw new DrugsManagerException();
+        
+        return drugsList.get(name).getSound();
     }
 	
 }

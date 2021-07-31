@@ -2,7 +2,7 @@
 drugs:
  cocaine:
   material: SUGAR
-  short: 2
+  short: 0
   displayname: "&f&lCocaine"
   lore:
     - "&7Ti da un po' di carica!"
@@ -11,9 +11,10 @@ drugs:
   sound: ENTITY_CAT_HISS
   sell-price: 50
   buy-price: 100
+  message: "§7Hai assunto la coca"
  weed:
   material: INK_SACK
-  short: 0
+  short: 2
   displayname: "&f&lWeed"
   lore:
     - "Ti da un po' di carica!"
@@ -23,7 +24,10 @@ drugs:
   sound: BLOCK_FIRE_AMBIENT
   sell-price: 50
   buy-price: 100
-  
+  message: "§7Hai fumato la weed"
+
+warning_message: "§cVacci piano bello!"
+
 seeds:
  cocaine:
   material: PUMPKIN_SEEDS

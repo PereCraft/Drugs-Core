@@ -19,16 +19,16 @@ public class MobListener implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
 
-        if(e.getEntity().getType()==EntityType.ZOMBIE) {
-            ItemStack cocaineitem = new ItemStack(Material.PUMPKIN_SEEDS);
-            ItemMeta cocainemeta = cocaineitem.getItemMeta();
-
-            cocainemeta.setDisplayName(DrugsManager.cocaineseedname);
-            cocainemeta.setLore(DrugsManager.cocaineseedlore);
-            cocaineitem.setItemMeta(cocainemeta);
-
-            e.getDrops().add(1, cocaineitem);
-        }
+//        if(e.getEntity().getType()==EntityType.ZOMBIE) {
+//            ItemStack cocaineitem = new ItemStack(Material.PUMPKIN_SEEDS);
+//            ItemMeta cocainemeta = cocaineitem.getItemMeta();
+//
+//            cocainemeta.setDisplayName(DrugsManager.cocaineseedname);
+//            cocainemeta.setLore(DrugsManager.cocaineseedlore);
+//            cocaineitem.setItemMeta(cocainemeta);
+//
+//            e.getDrops().add(1, cocaineitem);
+//        }
 
     }
 	
