@@ -1,7 +1,9 @@
 package perecraft.drugscore.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -13,14 +15,16 @@ public class Drug {
     private Material material;
     private short shortnum;
     private List<String> lore;
-    private List<PotionEffectType> effects;
+    private List<PotionEffectType> goodEffects;
+    // TODO: Aggiungere badEffects
+    private Sound sound;
     private int amplifier;
     private int sellPrice;
     private int buyPrice;
 
     public Drug() {}
     
-    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, int sellPrice, int buyPrice) {
+    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String sound, int sellPrice, int buyPrice) {
         this.id = id;
         this.displayName = displayName;        
         this.material = Material.matchMaterial(material);
@@ -28,13 +32,31 @@ public class Drug {
         this.lore = lore;
         
         // Caricamento effetti
-//        effects.forEach((String effect) -> { 
-//            this.effects.add(PotionEffectType.getByName(effect));
-//        });
+        this.goodEffects = new ArrayList<>();
+        effects.forEach((String effect) -> {
+            this.goodEffects.add(PotionEffectType.getByName(effect));
+        });
         
+        this.sound = Sound.valueOf(sound);
         this.amplifier = 1;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+    
     public Material getMaterial() {
         return material;
     }
@@ -59,14 +81,22 @@ public class Drug {
         this.lore = lore;
     }
 
-    public List<PotionEffectType> getEffects() {
-        return effects;
+    public List<PotionEffectType> getGoodEffects() {
+        return goodEffects;
     }
 
-    public void setEffects(List<PotionEffectType> effects) {
-        this.effects = effects;
+    public void setGoodEffects(List<PotionEffectType> effects) {
+        this.goodEffects = effects;
     }
 
+    public Sound getSound() {
+        return sound;
+    }
+
+    public void setSound(Sound sound) {
+        this.sound = sound;
+    }    
+    
     public int getAmplifier() {
         return amplifier;
     }
@@ -105,15 +135,16 @@ public class Drug {
 
     @Override
     public String toString() {
-//        String effect = "";
-//        //effect = effects.stream().map(p -> p.getName()).reduce(effect, String::concat);
-//        
+        String goodEffect = "";
+        // TODO: Rendere più figa la visione della lista elementi
+        goodEffect = goodEffects.stream().map(p -> p.getName()).reduce(goodEffect, String::concat);
+        
         return "Id: " + id + "\n " +
                 "Display name: " + displayName + "\n " +
                 "Material: " + material.toString() + "\n " +
                 "Short number: " + shortnum + "\n " +
                 "Lore: " + String.join(" - ", lore) + "\n " +
-//                //"Effects: " + effect + "\n " +
+                "Effects: " + goodEffect + "\n " +
                 "Amplifier: " + amplifier + "\n " +
                 "Sell price: " + sellPrice + "\n " +
                 "Buy price: " + buyPrice;

@@ -6,6 +6,9 @@ drugs:
   displayname: "&f&lCocaine"
   lore:
     - "&7Ti da un po' di carica!"
+  effects:
+    - SPEED
+  sound: ENTITY_CAT_HISS
   sell-price: 50
   buy-price: 100
  weed:
@@ -14,6 +17,10 @@ drugs:
   displayname: "&f&lWeed"
   lore:
     - "Ti da un po' di carica!"
+  effects:
+    - REGENERATION
+    - HUNGER
+  sound: BLOCK_FIRE_AMBIENT
   sell-price: 50
   buy-price: 100
   

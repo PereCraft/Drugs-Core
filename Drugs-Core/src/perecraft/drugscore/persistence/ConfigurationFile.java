@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import perecraft.drugscore.DrugsCore;
@@ -82,8 +81,12 @@ public class ConfigurationFile {
             configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore));
             
             // TODO: Aggiungere effetti
-            List<String> effects = null;
+            List<String> effects = new ArrayList<>();
+            configFile.getStringList(index+".effects").forEach((effect) -> {
+                effects.add(effect);
+            });
             
+            String sound = configFile.getString(index+".sound");            
             int sellPrice = Integer.parseInt(configFile.getString(index+".sell-price"));
             int buyPrice = Integer.parseInt(configFile.getString(index+".buy-price"));
             
@@ -94,6 +97,7 @@ public class ConfigurationFile {
                     shortnum,
                     lores,
                     effects,
+                    sound,
                     sellPrice,
                     buyPrice
             ));
