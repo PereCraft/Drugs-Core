@@ -62,6 +62,7 @@ public class DrugsCore extends JavaPlugin {
     }
 
     public void onReload() {
+        // TODO: Fai sta roba
         reloadConfig();
         plugin.getServer().getPluginManager().disablePlugin(plugin);
         plugin.getServer().getPluginManager().enablePlugin(plugin);

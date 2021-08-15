@@ -2,6 +2,7 @@ package perecraft.drugscore.manager;
 
 import java.util.HashMap;
 import java.util.List;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 
 import org.bukkit.command.CommandSender;
@@ -68,16 +69,36 @@ public class DrugsManager {
         return drugsList.containsKey(name);
     }
     
-    public static List<PotionEffect> getEffects(String name) throws DrugsManagerException {
+    /**
+     * Metodo che restituisce gli effetti di una droga, nel caso l'oggetto alla 
+     * quale si vuole interagire non è una droga allora ritorna null.
+     * @param name
+     * @return effetti della droga
+     */
+    public static List<PotionEffect> getEffects(String name) {
         if(!drugsList.containsKey(name)) 
-            throw new DrugsManagerException();
-        
+            return null;
+            
         return drugsList.get(name).getGoodEffects();
     }
     
-    public static Sound getSound(String name) throws DrugsManagerException {
+    public static List<Material> getDependencies(String name) {
+        if(!drugsList.containsKey(name))
+            return null;
+        
+        return drugsList.get(name).getDependencies();
+    }
+    
+    /**
+     * Metodo che ritorna il suono quando si interagisce con una droga, nel caso 
+     * l'oggetto alla quale si vuole interagire non è una droga allora ritorna 
+     * null.
+     * @param name
+     * @return suono di quando si interagisce con una droga.
+     */
+    public static Sound getSound(String name) {
         if(!drugsList.containsKey(name)) 
-            throw new DrugsManagerException();
+            return null;
         
         return drugsList.get(name).getSound();
     }

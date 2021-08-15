@@ -69,7 +69,6 @@ public class ConfigurationFile {
     }
 
     public String getWarningMessage() {
-        System.out.println(configFile.getString("warning_message"));
         return configFile.getString("warning_message");
     }
     
@@ -84,13 +83,16 @@ public class ConfigurationFile {
             short shortnum = Short.parseShort(configFile.getString(index+".short"));           
 
             List<String> lores = new ArrayList<>();
-            configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore.replace("&", "§")));
+            configFile.getStringList(index+".lore").forEach((String lore) -> lores.add(lore.replace("&", "§")));
             
-            // TODO: Aggiungere effetti
-            List<String> effects = new ArrayList<>();
-            configFile.getStringList(index+".effects").forEach((effect) -> {
-                effects.add(effect);
-            });
+            //List<String> effects = new ArrayList<>();
+            //configFile.getStringList(index+".effects").forEach((String effect) -> effects.add(effect));
+            List<String> effects = configFile.getStringList(index+".effects");
+            
+            // TODO: Fare effetti cattivi
+            
+            List<String> dependencies = new ArrayList<>();
+            configFile.getStringList(index+".dependencies").forEach((String dep) -> dependencies.add(dep));
             
             String sound = configFile.getString(index+".sound");            
             int sellPrice = Integer.parseInt(configFile.getString(index+".sell-price"));
@@ -104,6 +106,7 @@ public class ConfigurationFile {
                     shortnum,
                     lores,
                     effects,
+                    dependencies,
                     sound,
                     sellPrice,
                     buyPrice,
