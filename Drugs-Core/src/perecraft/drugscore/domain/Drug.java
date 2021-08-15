@@ -18,6 +18,7 @@ public class Drug {
     private List<String> lore;
     private List<PotionEffect> goodEffects;
     // TODO: Aggiungere badEffects
+    private List<Material> dependencies;
     private Sound sound;
     private int amplifier;
     private int sellPrice;
@@ -26,7 +27,7 @@ public class Drug {
 
     public Drug() {}
     
-    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String sound, int sellPrice, int buyPrice, String message) {
+    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, List<String> dependencies, String sound, int sellPrice, int buyPrice, String message) {
         this.id = id;
         this.displayName = displayName;        
         this.material = Material.matchMaterial(material);
@@ -37,6 +38,13 @@ public class Drug {
         this.goodEffects = new ArrayList<>();
         effects.forEach((String effect) -> {
             this.goodEffects.add(new PotionEffect(PotionEffectType.getByName(effect), 600, 1));
+        });
+        
+        // TODO: Fare gli effetti cattivi
+
+        this.dependencies = new ArrayList<>();
+        dependencies.forEach((String dep) -> {
+            this.dependencies.add(Material.matchMaterial(dep));
         });
         
         this.sound = Sound.valueOf(sound);
@@ -91,6 +99,14 @@ public class Drug {
     public void setGoodEffects(List<PotionEffect> effects) {
         this.goodEffects = effects;
     }
+    
+    public List<Material> getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(List<Material> dependencies) {
+        this.dependencies = dependencies;
+    }
 
     public Sound getSound() {
         return sound;
@@ -136,8 +152,6 @@ public class Drug {
         ItemStack item = new ItemStack(material, amount, shortnum);
         ItemMeta meta = item.getItemMeta();
         
-        System.out.println(Material.SUGAR);
-        
         meta.setLocalizedName(id);
         meta.setDisplayName(displayName);
         meta.setLore(lore);
@@ -146,18 +160,17 @@ public class Drug {
         target.getInventory().addItem(item);
         target.updateInventory();
     }
-
+    
     @Override
     public String toString() {
-        String goodEffect = "";
-        // TODO: Visualizzare potion effect elementi
         
         return "Id: " + id + "\n " +
                 "Display name: " + displayName + "\n " +
                 "Material: " + material.toString() + "\n " +
                 "Short number: " + shortnum + "\n " +
                 "Lore: " + String.join(" - ", lore) + "\n " +
-                "Effects: " + goodEffect + "\n " +
+                "Effects: " + goodEffects + "\n " +
+                "Dependencies: " + dependencies + "\n " +
                 "Amplifier: " + amplifier + "\n " +
                 "Sell price: " + sellPrice + "\n " +
                 "Buy price: " + buyPrice;
