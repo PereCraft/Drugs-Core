@@ -18,14 +18,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import perecraft.drugscore.manager.DrugsManager;
-import perecraft.drugscore.manager.exception.DrugsManagerException;
 
 public class DrugConsumeListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        
-        
+                
+        // e.getAction() == Action.RIGHT_CLICK_BLOCK genera un eccezione
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Player p = e.getPlayer();
             
@@ -37,27 +36,63 @@ public class DrugConsumeListener implements Listener {
                 
                 if(item.getItemMeta().hasLocalizedName() && DrugsManager.checkDrug(item.getItemMeta().getLocalizedName())) {
                     String name = item.getItemMeta().getLocalizedName();
+
+                    Collection<PotionEffect> effects = DrugsManager.getEffects(name);
+                    if(effects == null) return;
                     
-                    try {
-                        // FIX THIS SHIT
-                        Collection<PotionEffect> effects = DrugsManager.getEffects(name);
+                    // FIX THIS SHIT
+                    if(DrugsManager.getDependencies(name) == null) {
+                        return;
+                    } else if(!DrugsManager.getDependencies(name).isEmpty()) {
                         
-                        effects.forEach((PotionEffect pe) -> {
+                        // Controllo che l'utente abbia le dipendenze per il consumo
+                        for(Material dep : DrugsManager.getDependencies(name)) {
+                            if(p.getInventory().first(dep) == -1)
+                                return;
+                        }
+                        
+                        // Controllo che non sia già sotto effetti
+                        for(PotionEffect pe : effects) {
                             if(p.hasPotionEffect(pe.getType())) {
                                 p.sendMessage(DrugsManager.getWarningMessage());
                                 return;
                             }
-                        });
+                        }
                         
-                        System.out.println("sda");
+                        // Consumo materiali
+                        for(Material dep : DrugsManager.getDependencies(name)) {
+                            ItemStack itemdep = p.getInventory().getContents()[p.getInventory().first(dep)];
+                            
+                            if((short)(itemdep.getDurability() + 1) > dep.getMaxDurability()) {
+                                itemdep.setAmount(itemdep.getAmount() - 1);
+                            } else {
+                                itemdep.setDurability((short)(itemdep.getDurability() + 1));
+                            }
+                            
+                        }
+                        
+                        // Give degli effetti
+                        item.setAmount(item.getAmount() - 1);
                         
                         p.addPotionEffects(effects);
                         p.playSound(p.getLocation(), DrugsManager.getSound(name), 10, 1);
-                    } catch (DrugsManagerException ex) {}
+                        return;
+                                                
+                    }
                     
-                }
-                
-                
+                    for(PotionEffect pe : effects) {
+                        if(p.hasPotionEffect(pe.getType())) {
+                            p.sendMessage(DrugsManager.getWarningMessage());
+                            return;
+                        }
+                    }
+
+                    item.setAmount(item.getAmount() - 1);
+                    
+                    p.addPotionEffects(effects);
+                    p.playSound(p.getLocation(), DrugsManager.getSound(name), 10, 1);
+                    
+                }                
 
                 /**
                  * Pianta
