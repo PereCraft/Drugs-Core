@@ -40,7 +40,6 @@ public class DrugConsumeListener implements Listener {
                     Collection<PotionEffect> effects = DrugsManager.getEffects(name);
                     if(effects == null) return;
                     
-                    // FIX THIS SHIT
                     if(DrugsManager.getDependencies(name) == null) {
                         return;
                     } else if(!DrugsManager.getDependencies(name).isEmpty()) {
