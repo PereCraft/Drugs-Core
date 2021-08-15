@@ -12,6 +12,7 @@ drugs:
   sell-price: 50
   buy-price: 100
   message: "§7Hai assunto la coca"
+  dependencies:
  weed:
   material: INK_SACK
   short: 2
@@ -25,6 +26,9 @@ drugs:
   sell-price: 50
   buy-price: 100
   message: "§7Hai fumato la weed"
+  dependencies:
+    - FLINT_AND_STEEL
+    - PAPER  
 
 warning_message: "§cVacci piano bello!"
 
