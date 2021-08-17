@@ -1,13 +1,9 @@
 package perecraft.drugscore.listeners;
 
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static javax.management.MBeanOperationInfo.ACTION;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,6 +66,14 @@ public class DrugConsumeListener implements Listener {
                             
                         }
                         
+                        // Particelle
+                        Bukkit.getServer().getWorld(p.getWorld().getName()).spawnParticle(Particle.ITEM_CRACK, p.getLocation(), 40, item);
+                        if(DrugsManager.getParticle(name) != null) {
+                            Particle part = DrugsManager.getParticle(name);
+                            Bukkit.getServer().getWorld(p.getWorld().getName()).spawnParticle(part, p.getLocation(), 40);
+                        }
+
+                        
                         // Give degli effetti
                         item.setAmount(item.getAmount() - 1);
                         
@@ -85,7 +89,8 @@ public class DrugConsumeListener implements Listener {
                             return;
                         }
                     }
-
+                    
+                    Bukkit.getServer().getWorld(p.getWorld().getName()).spawnParticle(Particle.ITEM_CRACK, p.getLocation(), 40, item);
                     item.setAmount(item.getAmount() - 1);
                     
                     p.addPotionEffects(effects);

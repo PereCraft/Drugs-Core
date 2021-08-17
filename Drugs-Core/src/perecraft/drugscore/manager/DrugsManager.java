@@ -3,6 +3,7 @@ package perecraft.drugscore.manager;
 import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 
 import org.bukkit.command.CommandSender;
@@ -11,7 +12,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
-import perecraft.drugscore.manager.exception.DrugsManagerException;
 
 public class DrugsManager {
 
@@ -79,9 +79,30 @@ public class DrugsManager {
         if(!drugsList.containsKey(name)) 
             return null;
             
-        return drugsList.get(name).getGoodEffects();
+        return drugsList.get(name).getEffects();
     }
     
+    /**
+     * Metodo che restituisce la particella di una droga, nel caso l'oggetto alla 
+     * quale si vuole interagire non è una droga allora ritorna null.
+     * 
+     * Anche nel caso nel file config.yml sia inserito null, restituisce null.
+     * @param name
+     * @return particella della droga
+     */
+    public static Particle getParticle(String name) {
+        if(!drugsList.containsKey(name)) 
+            return null;
+            
+        return drugsList.get(name).getParticle();
+    }
+    
+    /**
+     * Metodo che restituisce le eventuali dipendenze di una droga, nel caso 
+     * l'oggetto alla quale si vuole interagire non è una droga allora ritorna null.
+     * @param name
+     * @return dipendenze della droga
+     */
     public static List<Material> getDependencies(String name) {
         if(!drugsList.containsKey(name))
             return null;

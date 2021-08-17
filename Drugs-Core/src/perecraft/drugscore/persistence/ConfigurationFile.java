@@ -84,16 +84,10 @@ public class ConfigurationFile {
 
             List<String> lores = new ArrayList<>();
             configFile.getStringList(index+".lore").forEach((String lore) -> lores.add(lore.replace("&", "§")));
-            
-            //List<String> effects = new ArrayList<>();
-            //configFile.getStringList(index+".effects").forEach((String effect) -> effects.add(effect));
             List<String> effects = configFile.getStringList(index+".effects");
-            
-            // TODO: Fare effetti cattivi
-            
-            List<String> dependencies = new ArrayList<>();
-            configFile.getStringList(index+".dependencies").forEach((String dep) -> dependencies.add(dep));
-            
+            List<String> dependencies = configFile.getStringList(index+".dependencies");
+
+            String particle = configFile.getString(index+".particle");       
             String sound = configFile.getString(index+".sound");            
             int sellPrice = Integer.parseInt(configFile.getString(index+".sell-price"));
             int buyPrice = Integer.parseInt(configFile.getString(index+".buy-price"));
@@ -106,6 +100,7 @@ public class ConfigurationFile {
                     shortnum,
                     lores,
                     effects,
+                    particle,
                     dependencies,
                     sound,
                     sellPrice,

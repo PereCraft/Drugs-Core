@@ -1,4 +1,3 @@
-# TODO: Aggiungere nome effetti
 drugs:
  cocaine:
   material: SUGAR
@@ -9,6 +8,7 @@ drugs:
   effects:
     - SPEED
   sound: ENTITY_CAT_HISS
+  particle: 
   sell-price: 50
   buy-price: 100
   message: "§7Hai assunto la coca"
@@ -23,6 +23,7 @@ drugs:
     - REGENERATION
     - HUNGER
   sound: BLOCK_FIRE_AMBIENT
+  particle: SMOKE_LARGE
   sell-price: 50
   buy-price: 100
   message: "§7Hai fumato la weed"

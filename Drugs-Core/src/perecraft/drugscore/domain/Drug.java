@@ -3,6 +3,7 @@ package perecraft.drugscore.domain;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,8 +17,8 @@ public class Drug {
     private Material material;
     private short shortnum;
     private List<String> lore;
-    private List<PotionEffect> goodEffects;
-    // TODO: Aggiungere badEffects
+    private List<PotionEffect> effects;
+    private Particle particle;
     private List<Material> dependencies;
     private Sound sound;
     private int amplifier;
@@ -27,7 +28,7 @@ public class Drug {
 
     public Drug() {}
     
-    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, List<String> dependencies, String sound, int sellPrice, int buyPrice, String message) {
+    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String particle, List<String> dependencies, String sound, int sellPrice, int buyPrice, String message) {
         this.id = id;
         this.displayName = displayName;        
         this.material = Material.matchMaterial(material);
@@ -35,12 +36,12 @@ public class Drug {
         this.lore = lore;
                 
         // Caricamento effetti
-        this.goodEffects = new ArrayList<>();
+        this.effects = new ArrayList<>();
         effects.forEach((String effect) -> {
-            this.goodEffects.add(new PotionEffect(PotionEffectType.getByName(effect), 600, 1));
+            this.effects.add(new PotionEffect(PotionEffectType.getByName(effect), 600, 1));
         });
         
-        // TODO: Fare gli effetti cattivi
+        this.particle = (particle != null) ? Particle.valueOf(particle) : null;
 
         this.dependencies = new ArrayList<>();
         dependencies.forEach((String dep) -> {
@@ -92,12 +93,20 @@ public class Drug {
         this.lore = lore;
     }
 
-    public List<PotionEffect> getGoodEffects() {
-        return goodEffects;
+    public List<PotionEffect> getEffects() {
+        return effects;
     }
 
-    public void setGoodEffects(List<PotionEffect> effects) {
-        this.goodEffects = effects;
+    public void setEffects(List<PotionEffect> effects) {
+        this.effects = effects;
+    }
+
+    public Particle getParticle() {
+        return particle;
+    }
+
+    public void setParticle(Particle particle) {
+        this.particle = particle;
     }
     
     public List<Material> getDependencies() {
@@ -169,7 +178,7 @@ public class Drug {
                 "Material: " + material.toString() + "\n " +
                 "Short number: " + shortnum + "\n " +
                 "Lore: " + String.join(" - ", lore) + "\n " +
-                "Effects: " + goodEffects + "\n " +
+                "Effects: " + effects + "\n " +
                 "Dependencies: " + dependencies + "\n " +
                 "Amplifier: " + amplifier + "\n " +
                 "Sell price: " + sellPrice + "\n " +
