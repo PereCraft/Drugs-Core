@@ -170,9 +170,20 @@ public class Drug {
         target.updateInventory();
     }
     
-    @Override
-    public String toString() {
+    public ItemStack getItem(int amount) {
+        ItemStack item = new ItemStack(material, amount, shortnum);
+        ItemMeta meta = item.getItemMeta();
         
+        meta.setLocalizedName(id);
+        meta.setDisplayName(displayName);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        
+        return item;
+    }
+    
+    @Override
+    public String toString() {        
         return "Id: " + id + "\n " +
                 "Display name: " + displayName + "\n " +
                 "Material: " + material.toString() + "\n " +
