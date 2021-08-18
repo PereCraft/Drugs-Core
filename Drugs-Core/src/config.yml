@@ -1,62 +1,72 @@
 drugs:
- cocaine:
-  material: SUGAR
-  short: 0
-  displayname: "&f&lCocaine"
-  lore:
-    - "&7Ti da un po' di carica!"
-  effects:
-    - SPEED
-  sound: ENTITY_CAT_HISS
-  particle: 
-  sell-price: 50
-  buy-price: 100
-  message: "§7Hai assunto la coca"
-  dependencies:
- weed:
-  material: INK_SACK
-  short: 2
-  displayname: "&f&lWeed"
-  lore:
-    - "Ti da un po' di carica!"
-  effects:
-    - REGENERATION
-    - HUNGER
-  sound: BLOCK_FIRE_AMBIENT
-  particle: SMOKE_LARGE
-  sell-price: 50
-  buy-price: 100
-  message: "§7Hai fumato la weed"
-  dependencies:
-    - FLINT_AND_STEEL
-    - PAPER  
+    cocaine:
+        material: SUGAR
+        short: 0
+        displayname: "&f&lCocaine"
+        lore:
+            - "&7Ti da un po' di carica!"
+        effects:
+            - SPEED
+        sound: ENTITY_CAT_HISS
+        particle: 
+        sell-price: 50
+        buy-price: 100
+        message: "§7Hai assunto la coca"
+        dependencies:
+    weed:
+        material: INK_SACK
+        short: 2
+        displayname: "&f&lWeed"
+        lore:
+            - "Ti da un po' di carica!"
+        effects:
+            - REGENERATION
+            - HUNGER
+        sound: BLOCK_FIRE_AMBIENT
+        particle: SMOKE_LARGE
+        sell-price: 50
+        buy-price: 100
+        message: "§7Hai fumato la weed"
+        dependencies:
+            - FLINT_AND_STEEL
+            - PAPER  
 
 warning_message: "§cVacci piano bello!"
 
 seeds:
- cocaine:
-  material: PUMPKIN_SEEDS
-  short: 0
-  displayname: "&7&lCocaine seeds"
-  lore:
-    - "&7Ricorda di zappare il terreno."
+    cocaine:
+        material: PUMPKIN_SEEDS
+        short: 0
+        displayname: "&7&lCocaine seeds"
+        lore:
+          - "&7Ricorda di zappare il terreno."
     
 custom-drops:
- '1':
-  entity: ZOMBIE
-  override-drops: false
-  drops:
-   '1':
-    drug: 'weed:seed'
-    min-amount: 1
-    max-amount: 2
-    drop-chance: 35 #%
- '2':
-  entity: CREEPER
-  override-drops: false
-  drops:
-   '1':
-    drug: 'meth:related.efedrina'
-    min-amount: 1
-    max-amount: 2
-    drop-chance: 5 #%
+    ZOMBIE: 
+        override-drops: false
+        drugs-drop:
+        seeds-drop:
+            - cocaine
+        drug-drop-chance: 0 #%
+        seed-drop-chance: 35 #%
+
+
+#custom-drops:
+# zombie:
+#  entity: ZOMBIE
+#  override-drops: false
+#  drops:
+#   '1':
+#    drug: 'weed:seed'
+#    min-amount: 1
+#    max-amount: 2
+#    drop-chance: 35 #%
+# creeper:
+#  entity: CREEPER
+#  override-drops: false
+#  drops:
+#   '1':
+#    drug: 'meth:related.efedrina'
+#    min-amount: 1
+#    max-amount: 2
+#    drop-chance: 5 #%
