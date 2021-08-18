@@ -1,5 +1,6 @@
 package perecraft.drugscore.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Material;
@@ -7,19 +8,47 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
 
 public class DrugsManager {
 
-    private static HashMap<String, Drug> drugsList = new HashMap<>();
-    private static HashMap<String, Seed> seedsList = new HashMap<>();
-    private static String warningMessage;
+    private static DrugsManager dm = null;
+    
+    private HashMap<String, Drug> drugsList = new HashMap<>();
+    private HashMap<String, Seed> seedsList = new HashMap<>();
+    private HashMap<EntityType, CustomDrop> cdList = new HashMap<>();
+    private String warningMessage;
 
-    public static void giveDrug(CommandSender sender, Player target, String drugArg, int amount) {
+    private DrugsManager() {
+        drugsList = new HashMap<>();
+        seedsList = new HashMap<>();
+        cdList = new HashMap<>();
+    }
+    
+    public static DrugsManager getManager() {
+        if(dm == null)
+            dm = new DrugsManager();
+        
+        return dm;
+    }
+    
+    /**
+     * Metodo che elimina il DrugManager
+     */
+    public void destroy() {
+        this.drugsList = null;
+        this.seedsList = null;
+        this.cdList = null;
+        this.warningMessage = null;
+        
+        this.dm = null;
+    }
+    
+    public void giveDrug(CommandSender sender, Player target, String drugArg, int amount) {
 
         if(!drugsList.containsKey(drugArg.toLowerCase())) {
             sender.sendMessage("§4Errore: §cDroga non valida!");
@@ -31,7 +60,7 @@ public class DrugsManager {
 
     }
 
-    public static void giveDrugSeed(CommandSender sender, Player target, String seedArg, int amount) {
+    public void giveDrugSeed(CommandSender sender, Player target, String seedArg, int amount) {
 
         if(!seedsList.containsKey(seedArg.toLowerCase())) {
             sender.sendMessage("§4Errore: §cDroga non valida!");
@@ -43,85 +72,70 @@ public class DrugsManager {
 
     }
     
-    public static void setDrugsList(List<Drug> lists) {
-        lists.forEach((d) -> {
+    public List<Drug> getDrugsList() {
+        return new ArrayList<>(drugsList.values());
+    }
+    
+    public void setDrugsList(List<Drug> lists) {
+        lists.forEach((Drug d) -> {
             if(!drugsList.containsKey(d.getId()))
                 drugsList.put(d.getId(), d);
         });
     }
     
-    public static void setSeedsList(List<Seed> lists) {
-        lists.forEach((d) -> {
-            if(!seedsList.containsKey(d.getId()))
-                seedsList.put(d.getId(), d);
+    public List<Seed> getSeedsList() {
+        return new ArrayList<>(seedsList.values());
+    }
+    
+    public void setSeedsList(List<Seed> lists) {
+        lists.forEach((Seed s) -> {
+            if(!seedsList.containsKey(s.getId()))
+                seedsList.put(s.getId(), s);
         });
     }
     
-    public static void setWarningMessage(String message) {
-        warningMessage = message;
+    public List<CustomDrop> getCustomDropList() {
+        return new ArrayList<>(cdList.values());
     }
     
-    public static String getWarningMessage() {
+    public void setCustomDropList(List<CustomDrop> lists) {
+        lists.forEach((CustomDrop cd) -> {
+            if(!cdList.containsKey(cd.getId()))
+                cdList.put(cd.getId(), cd);
+        });
+    }
+    
+    public String getWarningMessage() {
         return warningMessage;
     }
     
-    public static boolean checkDrug(String name) {
-        return drugsList.containsKey(name);
+    public void setWarningMessage(String message) {
+        warningMessage = message;
     }
-    
+        
     /**
-     * Metodo che restituisce gli effetti di una droga, nel caso l'oggetto alla 
-     * quale si vuole interagire non è una droga allora ritorna null.
-     * @param name
-     * @return effetti della droga
+     * Metodo che ritorna la droga, nel caso non esista ritorna null.
+     * @param name della droga
+     * @return droga
      */
-    public static List<PotionEffect> getEffects(String name) {
-        if(!drugsList.containsKey(name)) 
-            return null;
-            
-        return drugsList.get(name).getEffects();
-    }
-    
-    /**
-     * Metodo che restituisce la particella di una droga, nel caso l'oggetto alla 
-     * quale si vuole interagire non è una droga allora ritorna null.
-     * 
-     * Anche nel caso nel file config.yml sia inserito null, restituisce null.
-     * @param name
-     * @return particella della droga
-     */
-    public static Particle getParticle(String name) {
-        if(!drugsList.containsKey(name)) 
-            return null;
-            
-        return drugsList.get(name).getParticle();
-    }
-    
-    /**
-     * Metodo che restituisce le eventuali dipendenze di una droga, nel caso 
-     * l'oggetto alla quale si vuole interagire non è una droga allora ritorna null.
-     * @param name
-     * @return dipendenze della droga
-     */
-    public static List<Material> getDependencies(String name) {
+    public Drug getDrug(String name) {
         if(!drugsList.containsKey(name))
             return null;
         
-        return drugsList.get(name).getDependencies();
+        return drugsList.get(name);
     }
     
     /**
-     * Metodo che ritorna il suono quando si interagisce con una droga, nel caso 
-     * l'oggetto alla quale si vuole interagire non è una droga allora ritorna 
-     * null.
-     * @param name
-     * @return suono di quando si interagisce con una droga.
+     * Metodo che ritorna il drop personalizzato, nel caso non esista l'entità 
+     * ritorna null.
+     * @param e entità da cercare.
+     * @return drop personalizzato del entità uccisa.
      */
-    public static Sound getSound(String name) {
-        if(!drugsList.containsKey(name)) 
+    public CustomDrop getCustomDrop(EntityType e) {
+        if(!cdList.containsKey(e)) 
             return null;
         
-        return drugsList.get(name).getSound();
+        return cdList.get(e);
     }
 	
 }
