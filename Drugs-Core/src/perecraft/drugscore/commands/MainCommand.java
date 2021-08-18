@@ -54,7 +54,7 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
 
-                DrugsManager.giveDrug(sender, target, args[2], amount);
+                DrugsManager.getManager().giveDrug(sender, target, args[2], amount);
 
             } else if(args[0].equalsIgnoreCase("giveseed")) {
 
@@ -80,7 +80,7 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
 
-                DrugsManager.giveDrugSeed(sender, target, args[2], amount);
+                DrugsManager.getManager().giveDrugSeed(sender, target, args[2], amount);
 
             } else if(args[0].equalsIgnoreCase("reload")) {
 
@@ -93,27 +93,21 @@ public class MainCommand implements CommandExecutor {
                 sender.sendMessage("[Drugs-Core] §aReloaded!");
 
             } else if(args[0].equalsIgnoreCase("refresh")) {
-
+                
                 if(!sender.hasPermission("drugs.refresh")) {
                     sender.sendMessage(noperm);
                     return false;
                 }
 
-                if(args[1].equalsIgnoreCase("config")) {
-                    DrugsCore.getInstance().reloadConfig();
-                }
-
-                else if(args[1].equalsIgnoreCase("drugs")) {
-                    //TODO: Metodo reload drugs esempio:
-                    //DrugsManager.reloadDrugs();
-                }
+                DrugsCore.getInstance().onRefresh();
 
             } else {
                 sender.sendMessage("§cArgomento sconosciuto. Digita §7/dr §cper aiuto.");
+                return false;
             }
         }
         
-        return false;	
+        return true;	
     }
 
     private void getHelp(CommandSender sender) {
