@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import perecraft.drugscore.commands.MainCommand;
+import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
 import perecraft.drugscore.listeners.*;
@@ -21,29 +22,39 @@ public class DrugsCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        plugin=this;
-        version=0.1;
+        this.plugin = this;
+        this.version = 0.1;
 
         List<Drug> drugsList = null;
         List<Seed> seedsList = null;
-        String warningMessage;
+        List<CustomDrop> cdList = null;
         try {
+            DrugsManager.getManager().setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
+            
+            // Leggere configurazione di semi e droghe
             drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
             seedsList = ConfigurationFile.getConfigFile().getSeedElements();
-            DrugsManager.setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
+            
+            Bukkit.getLogger().info("Droghe caricate: ");
+            drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
+            DrugsManager.getManager().setDrugsList(drugsList);
+
+            Bukkit.getLogger().info("Semi caricati: ");
+            seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
+            DrugsManager.getManager().setSeedsList(seedsList);
+
+            // Leggere configurazione drop personalizzati
+            cdList = ConfigurationFile.getConfigFile().getCustomDrops();
+
+            Bukkit.getLogger().info("Drop personalizzati caricati: ");
+            cdList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
+            DrugsManager.getManager().setCustomDropList(cdList);
+        
         } catch(IOException ex) {
             Bukkit.getLogger().log(Level.WARNING, "Impossibile leggere il file di configurazione.{0}", ex.getMessage());
             Bukkit.getLogger().log(Level.SEVERE, ex.getMessage());
             onDisable();
         }
-        
-        Bukkit.getLogger().info("Droghe caricate: ");
-        drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
-        DrugsManager.setDrugsList(drugsList);
-        
-        Bukkit.getLogger().info("Semi caricati: ");
-        seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
-        DrugsManager.setSeedsList(seedsList);
         
         getCommand("drugs").setExecutor(new MainCommand());
 
@@ -60,13 +71,57 @@ public class DrugsCore extends JavaPlugin {
     public void onDisable() {
         Bukkit.getLogger().info("Drugs-Core disattivato");
     }
+    
+    /**
+     * Metodo che ricarica il file di config.
+     */
+    public void onRefresh() {
+        List<Drug> drugsList = null;
+        List<Seed> seedsList = null;
+        List<CustomDrop> cdList = null;
+        
+        DrugsManager.getManager().destroy();
+        
+        try {
+            ConfigurationFile.getConfigFile().refreshConfig();
+            DrugsManager.getManager().setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
+            
+            // Leggere configurazione di semi e droghe
+            drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
+            seedsList = ConfigurationFile.getConfigFile().getSeedElements();
+            
+            Bukkit.getLogger().info("Droghe caricate: ");
+            drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
+            DrugsManager.getManager().setDrugsList(drugsList);
 
+            Bukkit.getLogger().info("Semi caricati: ");
+            seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
+            DrugsManager.getManager().setSeedsList(seedsList);
+
+            // Leggere configurazione drop personalizzati
+            cdList = ConfigurationFile.getConfigFile().getCustomDrops();
+
+            Bukkit.getLogger().info("Drop personalizzati caricati: ");
+            cdList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
+            DrugsManager.getManager().setCustomDropList(cdList);
+        
+        } catch(IOException ex) {
+            Bukkit.getLogger().log(Level.WARNING, "Impossibile leggere il file di configurazione.{0}", ex.getMessage());
+            Bukkit.getLogger().log(Level.SEVERE, ex.getMessage());
+            onDisable();
+        }
+        
+        Bukkit.getLogger().info("File config ricaricato");
+    }
+    
+    /**
+     * Metodo che ricarica il plugin (compreso il file di config).
+     */
     public void onReload() {
-        // TODO: Fai sta roba
-        reloadConfig();
+        this.onRefresh();
         plugin.getServer().getPluginManager().disablePlugin(plugin);
         plugin.getServer().getPluginManager().enablePlugin(plugin);
-        Bukkit.getLogger().info("Plugin reloaded");
+        Bukkit.getLogger().info("Plugin ricaricato");
     }
 
     public static DrugsCore getInstance() {
