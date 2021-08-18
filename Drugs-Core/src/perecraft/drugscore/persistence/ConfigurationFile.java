@@ -15,8 +15,10 @@ import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import perecraft.drugscore.DrugsCore;
+import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
+import perecraft.drugscore.manager.DrugsManager;
 
 public class ConfigurationFile {
     
@@ -25,13 +27,14 @@ public class ConfigurationFile {
     private File file;
     private YamlConfiguration configFile;
     
+    // FIX LETTURA FILE DI CONFIG
     private ConfigurationFile() throws IOException {
         file = new File(DrugsCore.getInstance().getDataFolder().getPath() + "/config.yml");
-                
+        
         if(!file.exists()) {
             file.getParentFile().mkdirs();
             
-            System.out.println("[PearRewards] Il file di configurazione non esiste, creazione del file config.yml");
+            System.out.println("[DrugsCore] Il file di configurazione non esiste, creazione del file config.yml");
             InputStream in = DrugsCore.class.getResourceAsStream("/config.yml");
             OutputStream out = new FileOutputStream(file);
 
@@ -49,7 +52,6 @@ public class ConfigurationFile {
         }
         
         configFile = YamlConfiguration.loadConfiguration(file);
-                
     }
     
     public static ConfigurationFile getConfigFile() throws IOException {
@@ -135,5 +137,46 @@ public class ConfigurationFile {
         });
         
         return list;
+    }
+    
+    public List<CustomDrop> getCustomDrops() {
+        List<CustomDrop> list = new ArrayList<>();
+        
+        configFile.getConfigurationSection("custom-drops").getKeys(false).forEach((String i) -> {
+            String index = "custom-drops."+i;
+            
+            Boolean overrideDrop = configFile.getBoolean(index+"override-drops");
+            
+            System.out.println("configFile override: " + configFile.getBoolean(index+"override-drops"));
+            
+            List<Drug> drugList = new ArrayList();
+            configFile.getStringList(index+".drugs-drop").forEach((String nameDrug) -> {
+                DrugsManager.getManager().getDrugsList().forEach((Drug d) -> {
+                    if(nameDrug.equalsIgnoreCase(d.getId())) drugList.add(d);
+                });
+            });
+
+            List<Seed> seedList = new ArrayList();
+            configFile.getStringList(index+".seeds-drop").forEach((String nameSeed) -> {     
+                DrugsManager.getManager().getSeedsList().forEach((Seed s) -> {
+                    if(nameSeed.equalsIgnoreCase(s.getId())) seedList.add(s);
+                });
+            });
+
+            Short drugsChance = Short.valueOf(configFile.getString(index+".drug-drop-chance"));
+            Short seedsChance = Short.valueOf(configFile.getString(index+".seed-drop-chance"));
+                    
+            list.add(new CustomDrop(
+                    i, 
+                    overrideDrop,
+                    drugList,
+                    seedList,
+                    drugsChance,
+                    seedsChance
+            ));
+            
+        });
+        
+        return list;        
     }
 }
