@@ -1,3 +1,35 @@
+# DROGHE
+#
+# Questa sezione è dedicata alla configurazione delle droghe, la struttura è 
+# composta da:
+# drugs
+# └── key (nome della droga)
+#     ├── materiale
+#     ├── short (danneggio dell'oggetto, esempio INK_SACK con short impostato a 
+#     │   2 ha il colore verde scuro; guarda https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/inventory/ItemStack.html) 
+#     ├── displayname
+#     ├── lore (descrizione) 
+#     ├── effetti
+#     ├── suono
+#     ├── particelle (di default si vede l'oggetto rompersi) NON OBBLIGATORIO
+#     ├── prezzo per comprare (da implementare)
+#     ├── prezzo per vendere (da implementare)
+#     ├── messaggio quando si assume la droga
+#     └── dipendeze per assumere la droga (es: per la weed c'è bisogno di 
+#         accendino e carta) NON OBBLIGATORIO
+#
+# Per configurare material, effects, sound e particles, bisogna consultare la 
+# documentazione di spigot 1.12.2 https://spigotdocs.okaeri.eu/1.12.2/overview-summary.html
+# In particolar modo:
+#   - Material https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/Material.html
+#   - Effects https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/potion/PotionEffectType.html
+#   - Sound https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/Sound.html
+#   - Particle https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/Particle.html
+#   
+# *ATTENZIONE: Bisogna mettere solo il nome in MAIUSCOLO (o come è scritto nella
+# documentazione)*
+#
+# Guardare e capire prima gli esempi sottostanti
 drugs:
     cocaine:
         material: SUGAR
@@ -31,8 +63,18 @@ drugs:
             - FLINT_AND_STEEL
             - PAPER  
 
+# Messaggio di errore quando l'utente ha già assunto una droga
 warning_message: "§cVacci piano bello!"
 
+# SEMI
+#
+# Il ragionamento è analogo a queello delle droghe, è necessario consultare solo 
+# la documentazione per i materiali https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/Material.html
+#
+# *ATTENZIONE: Bisogna mettere solo il nome in MAIUSCOLO (o come è scritto nella
+# documentazione)*
+#
+# Guardare e capire prima gli esempi sottostanti
 seeds:
     cocaine:
         material: PUMPKIN_SEEDS
@@ -41,6 +83,27 @@ seeds:
         lore:
           - "&7Ricorda di zappare il terreno."
     
+# CUSTOM DROPS
+#
+# Questa sezione è dedicata alla configurazione dei drop personalizzata, 
+# la struttura è composta da:
+# custom-drops
+# └── key (nome dell'entità  che dropperà gli oggetti, es: ZOMBIE)
+#     ├── override-drops (se `true` sostituisce i drop dell'entità con quelli 
+#     │    personalizzati)
+#     ├── drugs-drop (lista contenente tutte le droghe che deve droppare l'entità) 
+#     │     NON OBBLIGATORIO
+#     ├── seeds-drop (ragionamento analogo a drugs-drop) NON OBBLIGATORIO
+#     ├── drug-drop-chance (probabilità di drop delle droghe) MINIMO 0
+#     └── seed-drop-chance (ragionamento analogo a drug-drop-chance) MINIMO 0
+#
+# Per configurare key è necessario consultare la documentazione di EntityType 
+# https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/entity/EntityType.html
+#
+# *ATTENZIONE: Bisogna mettere solo il nome in MAIUSCOLO (o come è scritto nella
+# documentazione)*
+#
+# Guardare e capire prima gli esempi sottostanti
 custom-drops:
     ZOMBIE: 
         override-drops: false
@@ -49,24 +112,3 @@ custom-drops:
             - cocaine
         drug-drop-chance: 0 #%
         seed-drop-chance: 35 #%
-
-
-#custom-drops:
-# zombie:
-#  entity: ZOMBIE
-#  override-drops: false
-#  drops:
-#   '1':
-#    drug: 'weed:seed'
-#    min-amount: 1
-#    max-amount: 2
-#    drop-chance: 35 #%
-# creeper:
-#  entity: CREEPER
-#  override-drops: false
-#  drops:
-#   '1':
-#    drug: 'meth:related.efedrina'
-#    min-amount: 1
-#    max-amount: 2
-#    drop-chance: 5 #%
