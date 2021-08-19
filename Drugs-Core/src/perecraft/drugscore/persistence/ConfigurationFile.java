@@ -145,9 +145,7 @@ public class ConfigurationFile {
         configFile.getConfigurationSection("custom-drops").getKeys(false).forEach((String i) -> {
             String index = "custom-drops."+i;
             
-            Boolean overrideDrop = configFile.getBoolean(index+"override-drops");
-            
-            System.out.println("configFile override: " + configFile.getBoolean(index+"override-drops"));
+            Boolean overrideDrop = Boolean.valueOf(configFile.getString(index+".override-drops"));
             
             List<Drug> drugList = new ArrayList();
             configFile.getStringList(index+".drugs-drop").forEach((String nameDrug) -> {
