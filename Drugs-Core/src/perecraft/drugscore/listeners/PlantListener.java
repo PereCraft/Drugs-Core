@@ -17,6 +17,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import perecraft.drugscore.DrugsCore;
 import perecraft.drugscore.manager.DrugsManager;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class PlantListener implements Listener {
 	
 	@EventHandler

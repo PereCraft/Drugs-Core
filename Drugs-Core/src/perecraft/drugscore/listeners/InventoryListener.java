@@ -10,6 +10,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 //import net.milkbowl.vault.VaultEco;
 import perecraft.drugscore.manager.DrugsManager;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class InventoryListener implements Listener {
 
 	@EventHandler

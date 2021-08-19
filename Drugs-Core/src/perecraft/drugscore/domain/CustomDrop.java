@@ -10,7 +10,7 @@ import org.bukkit.entity.EntityType;
 
 /**
  *
- * @author antonio
+ * @author PereCraft
  */
 public class CustomDrop {
     EntityType id;

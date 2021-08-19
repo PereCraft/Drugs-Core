@@ -15,6 +15,10 @@ import perecraft.drugscore.listeners.*;
 import perecraft.drugscore.manager.DrugsManager;
 import perecraft.drugscore.persistence.ConfigurationFile;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class DrugsCore extends JavaPlugin {
 
     private static DrugsCore plugin;

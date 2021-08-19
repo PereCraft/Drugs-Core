@@ -14,6 +14,10 @@ import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class DrugsManager {
 
     private static DrugsManager dm = null;

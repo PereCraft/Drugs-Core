@@ -16,6 +16,10 @@ import net.md_5.bungee.api.chat.TextComponent;
 import perecraft.drugscore.DrugsCore;
 import perecraft.drugscore.manager.DrugsManager;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class MainCommand implements CommandExecutor {
 
     @Override

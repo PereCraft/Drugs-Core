@@ -20,6 +20,10 @@ import perecraft.drugscore.domain.Drug;
 import perecraft.drugscore.domain.Seed;
 import perecraft.drugscore.manager.DrugsManager;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class ConfigurationFile {
     
     private static ConfigurationFile config = null;
@@ -27,7 +31,6 @@ public class ConfigurationFile {
     private File file;
     private YamlConfiguration configFile;
     
-    // FIX LETTURA FILE DI CONFIG
     private ConfigurationFile() throws IOException {
         file = new File(DrugsCore.getInstance().getDataFolder().getPath() + "/config.yml");
         

@@ -6,7 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-
+/**
+ *
+ * @author PereCraft
+ */
 public class Seed {
     private String id;
     private String displayName;

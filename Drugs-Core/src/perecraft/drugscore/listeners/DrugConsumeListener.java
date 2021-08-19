@@ -16,6 +16,10 @@ import perecraft.drugscore.domain.Drug;
 
 import perecraft.drugscore.manager.DrugsManager;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class DrugConsumeListener implements Listener {
 
     @EventHandler

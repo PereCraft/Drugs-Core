@@ -11,6 +11,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+/**
+ *
+ * @author PereCraft
+ */
 public class Drug {
     private String id;
     private String displayName;
