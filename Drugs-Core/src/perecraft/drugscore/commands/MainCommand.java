@@ -22,6 +22,8 @@ import perecraft.drugscore.manager.DrugsManager;
  */
 public class MainCommand implements CommandExecutor {
 
+    
+    // TODO: Aggiungere giveitemextra comando
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String CommandLabel, String[] args) {
 
@@ -41,17 +43,17 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
 
+                if(args.length != 4 || !NumberUtils.isNumber(args[3])) {
+                    sender.sendMessage("§4Uso: §c/drugs give [Player] [drugid] [amount]");
+                    return false;
+                }
+                
                 Player target = Bukkit.getPlayer(args[1]);
                 if(target == null) {
                     sender.sendMessage("§4Errore: §cPlayer non trovato!");
                     return false;
                 }
-
-                if(args.length != 4 || !NumberUtils.isNumber(args[3])) {
-                    sender.sendMessage("§4Uso: §c/drugs give [Player] [drugid] [amount]");
-                    return false;
-                }
-
+                
                 int amount = Integer.parseInt(args[3]);
                 if(amount < 1 || amount > 64) {
                     sender.sendMessage("§4Errore: §cMin 1 - Max 64");
@@ -67,17 +69,17 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
 
-                Player target = Bukkit.getPlayer(args[1]);
-                if(target == null) {
-                    sender.sendMessage("§4Errore: §cPlayer non trovato!");
-                    return false;
-                }
-
                 if(args.length != 4 || !NumberUtils.isNumber(args[3])) {
                     sender.sendMessage("§4Uso: §c/drugs seedgive [Player] [drugid] [amount]");
                     return false;
                 }
-
+                
+                Player target = Bukkit.getPlayer(args[1]);                
+                if(target == null) {
+                    sender.sendMessage("§4Errore: §cPlayer non trovato!");
+                    return false;
+                }
+                
                 int amount = Integer.parseInt(args[3]);
                 if(amount<1 || amount>64) {
                     sender.sendMessage("§4Errore: §cMin 1 - Max 64");
@@ -86,6 +88,33 @@ public class MainCommand implements CommandExecutor {
 
                 DrugsManager.getManager().giveDrugSeed(sender, target, args[2], amount);
 
+            } else if(args[0].equalsIgnoreCase("giveitemex")) {
+                
+                if(!sender.hasPermission("drugs.giveitemex")) {
+                    sender.sendMessage(noperm);
+                    return false;
+                }
+                
+                if(args.length != 4 || !NumberUtils.isNumber(args[3])) {
+                    sender.sendMessage("§4Uso: §c/drugs giveitemex [Player] [itemexid] [amount]");
+                    return false;
+                }
+
+                Player target = Bukkit.getPlayer(args[1]);
+                if(target == null) {
+                    sender.sendMessage("§4Errore: §cPlayer non trovato!");
+                    return false;
+                }
+                
+                
+                int amount = Integer.parseInt(args[3]);
+                if(amount<1 || amount>64) {
+                    sender.sendMessage("§4Errore: §cMin 1 - Max 64");
+                    return false;
+                }
+
+                DrugsManager.getManager().giveItemExtra(sender, target, args[2], amount);
+                
             } else if(args[0].equalsIgnoreCase("reload")) {
 
                 if(!sender.hasPermission("drugs.reload")) {
