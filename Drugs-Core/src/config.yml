@@ -45,6 +45,7 @@ drugs:
         buy-price: 100
         message: "§7Hai assunto la coca"
         dependencies:
+        dependencies-extra:
     weed:
         material: INK_SACK
         short: 2
@@ -62,6 +63,7 @@ drugs:
         dependencies:
             - FLINT_AND_STEEL
             - PAPER  
+        dependencies-extra:
 
 # Messaggio di errore quando l'utente ha già assunto una droga
 warning_message: "§cVacci piano bello!"
@@ -81,8 +83,28 @@ seeds:
         short: 0
         displayname: "&7&lCocaine seeds"
         lore:
-          - "&7Ricorda di zappare il terreno."
-    
+            - "&7Ricorda di zappare il terreno."
+
+# ITEM EXTRA
+#
+# Il ragionamento è analogo a queello delle droghe, è necessario consultare solo 
+# la documentazione per i materiali https://spigotdocs.okaeri.eu/1.12.2/org/bukkit/Material.html
+#
+# *ATTENZIONE: Bisogna mettere solo il nome in MAIUSCOLO (o come è scritto nella
+# documentazione)*
+# 
+# Con ItemExtra si intendono quei elementi necessarie per il consumo o il 
+# crafting di una droga.
+#
+# Guardare e capire prima gli esempi sottostanti
+item-extra:
+    ephedrine:
+        material: GHAST_TEAR
+        short: 0
+        displayname: "&f&lEphedrine"
+        lore: 
+            - "&7Usato per la produzione di metanfetamina."
+
 # CUSTOM DROPS
 #
 # Questa sezione è dedicata alla configurazione dei drop personalizzata, 
@@ -107,8 +129,20 @@ seeds:
 custom-drops:
     ZOMBIE: 
         override-drops: false
+        ie-drop:
         drugs-drop:
         seeds-drop:
             - cocaine
+        ie-drop-chance: 0 #%
         drug-drop-chance: 0 #%
         seed-drop-chance: 35 #%
+    CREEPER:
+        override-drops: false
+        ie-drop: 
+            - ephedrine
+        drugs-drop:
+        seeds-drop:
+        ie-drop-chance: 5 #%
+        drug-drop-chance: 0 #%
+        seed-drop-chance: 0 #%
+        
