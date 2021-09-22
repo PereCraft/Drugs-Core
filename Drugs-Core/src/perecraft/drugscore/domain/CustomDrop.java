@@ -15,18 +15,22 @@ import org.bukkit.entity.EntityType;
 public class CustomDrop {
     EntityType id;
     Boolean overrideDrop;
+    List<ItemExtra> ieList;
     List<Drug> drugsList;
     List<Seed> seedsList;
+    Short ieChance;
     Short drugsChance;
     Short seedsChance;
 
     public CustomDrop() {}
     
-    public CustomDrop(String entity, Boolean overrideDrop, List<Drug> drugsList, List<Seed> seedsList, Short drugsChance, Short seedsChance) {
+    public CustomDrop(String entity, Boolean overrideDrop, List<ItemExtra> ieList, List<Drug> drugsList, List<Seed> seedsList, Short ieChance, Short drugsChance, Short seedsChance) {
         this.id = EntityType.valueOf(entity);
         this.overrideDrop = overrideDrop;
+        this.ieList = ieList;
         this.drugsList = drugsList;
         this.seedsList = seedsList;
+        this.ieChance = ieChance;
         this.drugsChance = drugsChance;
         this.seedsChance = seedsChance;
     }
@@ -47,6 +51,14 @@ public class CustomDrop {
         this.overrideDrop = overrideDrop;
     }
 
+    public List<ItemExtra> getItemExtraList() {
+        return ieList;
+    }
+
+    public void setItemExtraList(List<ItemExtra> ieList) {
+        this.ieList = ieList;
+    }
+    
     public List<Drug> getDrugsList() {
         return drugsList;
     }
@@ -61,6 +73,14 @@ public class CustomDrop {
 
     public void setSeedsList(List<Seed> seedsList) {
         this.seedsList = seedsList;
+    }
+    
+    public Short getItemExtraChance() {
+        return ieChance;
+    }
+
+    public void setItemExtraChance(Short ieChance) {
+        this.ieChance = ieChance;
     }
 
     public Short getDrugsChance() {
@@ -83,8 +103,10 @@ public class CustomDrop {
     public String toString() {        
         return "Id: " + id + "\n " +
                 "Override drop: " + overrideDrop + "\n " +
+                "ItemExtras drop: " + ieList + "\n " +
                 "Drugs drop: " + drugsList + "\n " +
                 "Seeds drop: " + seedsList + "\n " +
+                "ItemExtras chance: " + ieChance + "\n " +
                 "Drugs chance: " + drugsChance + "\n " +
                 "Seeds chance: " + seedsChance;
     }
