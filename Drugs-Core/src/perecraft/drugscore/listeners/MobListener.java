@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.ItemExtra;
 import perecraft.drugscore.domain.Seed;
 
 import perecraft.drugscore.manager.DrugsManager;
@@ -43,6 +44,15 @@ public class MobListener implements Listener {
                 if(Math.round(Math.random()*100)%(100/cd.getSeedsChance()) == 0) {
                     cd.getSeedsList().forEach((Seed s) -> {
                         e.getDrops().add(s.getItem(1));
+                    });
+                }
+            }
+            
+            // ItemExtra chance
+            if(!cd.getItemExtraList().isEmpty() && cd.getItemExtraChance() != 0) {
+                if(Math.round(Math.random()*100)%(100/cd.getItemExtraChance()) == 0) {
+                    cd.getItemExtraList().forEach((ItemExtra ie) -> {
+                        e.getDrops().add(ie.getItem(1));
                     });
                 }
             }
