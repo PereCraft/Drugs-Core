@@ -1,6 +1,7 @@
 package perecraft.drugscore;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import perecraft.drugscore.listeners.DrugConsumeListener;
@@ -10,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import perecraft.drugscore.commands.MainCommand;
 import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.ItemExtra;
 import perecraft.drugscore.domain.Seed;
 import perecraft.drugscore.listeners.*;
 import perecraft.drugscore.manager.DrugsManager;
@@ -28,16 +30,19 @@ public class DrugsCore extends JavaPlugin {
     public void onEnable() {
         this.plugin = this;
         this.version = 0.1;
-
-        List<Drug> drugsList = null;
-        List<Seed> seedsList = null;
-        List<CustomDrop> cdList = null;
+        
         try {
             DrugsManager.getManager().setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
+            HashMap<String, List> hash = ConfigurationFile.getConfigFile().getElements();
             
-            // Leggere configurazione di semi e droghe
-            drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
-            seedsList = ConfigurationFile.getConfigFile().getSeedElements();
+            List<Drug> drugsList = hash.get("Drug");
+            List<Seed> seedsList = hash.get("Seed");
+            List<ItemExtra> ieList = hash.get("ItemExtra");
+            List<CustomDrop> cdList = hash.get("CustomDrop");
+            
+            Bukkit.getLogger().info("ItemExtra caricate: ");
+            ieList.forEach((ie) -> Bukkit.getLogger().info(ie.toString()));
+            DrugsManager.getManager().setItemExtraList(ieList);            
             
             Bukkit.getLogger().info("Droghe caricate: ");
             drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
@@ -46,9 +51,6 @@ public class DrugsCore extends JavaPlugin {
             Bukkit.getLogger().info("Semi caricati: ");
             seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
             DrugsManager.getManager().setSeedsList(seedsList);
-
-            // Leggere configurazione drop personalizzati
-            cdList = ConfigurationFile.getConfigFile().getCustomDrops();
 
             Bukkit.getLogger().info("Drop personalizzati caricati: ");
             cdList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
@@ -79,20 +81,23 @@ public class DrugsCore extends JavaPlugin {
     /**
      * Metodo che ricarica il file di config.
      */
-    public void onRefresh() {
-        List<Drug> drugsList = null;
-        List<Seed> seedsList = null;
-        List<CustomDrop> cdList = null;
-        
+    public void onRefresh() {        
         DrugsManager.getManager().destroy();
         
         try {
             ConfigurationFile.getConfigFile().refreshConfig();
-            DrugsManager.getManager().setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
             
-            // Leggere configurazione di semi e droghe
-            drugsList = ConfigurationFile.getConfigFile().getDrugsElements();
-            seedsList = ConfigurationFile.getConfigFile().getSeedElements();
+            DrugsManager.getManager().setWarningMessage(ConfigurationFile.getConfigFile().getWarningMessage());
+            HashMap<String, List> hash = ConfigurationFile.getConfigFile().getElements();
+            
+            List<Drug> drugsList = hash.get("Drug");
+            List<Seed> seedsList = hash.get("Seed");
+            List<ItemExtra> ieList = hash.get("ItemExtra");
+            List<CustomDrop> cdList = hash.get("CustomDrop");
+            
+            Bukkit.getLogger().info("ItemExtra caricate: ");
+            ieList.forEach((ie) -> Bukkit.getLogger().info(ie.toString()));
+            DrugsManager.getManager().setItemExtraList(ieList);            
             
             Bukkit.getLogger().info("Droghe caricate: ");
             drugsList.forEach((d) -> Bukkit.getLogger().info(d.toString()));
@@ -101,9 +106,6 @@ public class DrugsCore extends JavaPlugin {
             Bukkit.getLogger().info("Semi caricati: ");
             seedsList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
             DrugsManager.getManager().setSeedsList(seedsList);
-
-            // Leggere configurazione drop personalizzati
-            cdList = ConfigurationFile.getConfigFile().getCustomDrops();
 
             Bukkit.getLogger().info("Drop personalizzati caricati: ");
             cdList.forEach((s) -> Bukkit.getLogger().info(s.toString()));
@@ -137,7 +139,7 @@ public class DrugsCore extends JavaPlugin {
     }
 
     public void setVersion(Double version) {
-        this.version=version;
+        this.version = version;
     }
     
     /**
