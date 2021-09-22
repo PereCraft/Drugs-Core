@@ -16,6 +16,9 @@ permissions:
   drugs.giveseed:
     description: Permette di usare /dr giveseed
     default: op
+  drugs.itemex:
+    description: Permette di usare /dr giveitemex
+    default: op
   drugs.reload:
     description: Permette di usare /dr reload
     default: op
