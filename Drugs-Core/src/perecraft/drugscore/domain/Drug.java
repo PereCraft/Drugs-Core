@@ -24,15 +24,16 @@ public class Drug {
     private List<PotionEffect> effects;
     private Particle particle;
     private List<Material> dependencies;
+    private List<ItemExtra> dependenciesExtra;
     private Sound sound;
     private int amplifier;
     private int sellPrice;
     private int buyPrice;
     private String message;
-
+    
     public Drug() {}
     
-    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String particle, List<String> dependencies, String sound, int sellPrice, int buyPrice, String message) {
+    public Drug(String id, String displayName, String material, short shortnum, List<String> lore, List<String> effects, String particle, List<String> dependencies, List<ItemExtra> dependenciesExtra, String sound, int sellPrice, int buyPrice, String message) {
         this.id = id;
         this.displayName = displayName;        
         this.material = Material.matchMaterial(material);
@@ -52,6 +53,7 @@ public class Drug {
             this.dependencies.add(Material.matchMaterial(dep));
         });
         
+        this.dependenciesExtra = dependenciesExtra;        
         this.sound = Sound.valueOf(sound);
         this.amplifier = 1;
         this.message = message;
@@ -121,6 +123,14 @@ public class Drug {
         this.dependencies = dependencies;
     }
 
+    public List<ItemExtra> getDependenciesExtra() {
+        return dependenciesExtra;
+    }
+
+    public void setDependenciesExtra(List<ItemExtra> dependenciesExtra) {
+        this.dependenciesExtra = dependenciesExtra;
+    }
+    
     public Sound getSound() {
         return sound;
     }
@@ -195,6 +205,7 @@ public class Drug {
                 "Lore: " + String.join(" - ", lore) + "\n " +
                 "Effects: " + effects + "\n " +
                 "Dependencies: " + dependencies + "\n " +
+                "Dependencies extra: " + dependenciesExtra + "\n " +
                 "Amplifier: " + amplifier + "\n " +
                 "Sell price: " + sellPrice + "\n " +
                 "Buy price: " + buyPrice;
