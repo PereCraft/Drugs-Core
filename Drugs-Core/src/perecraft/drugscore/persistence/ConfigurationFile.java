@@ -11,12 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import perecraft.drugscore.DrugsCore;
 import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.ItemExtra;
 import perecraft.drugscore.domain.Seed;
 import perecraft.drugscore.manager.DrugsManager;
 
@@ -77,9 +79,35 @@ public class ConfigurationFile {
         return configFile.getString("warning_message");
     }
     
-    public List<Drug> getDrugsElements() {
-        List<Drug> list = new ArrayList<>();
+    public HashMap<String, List> getElements() {
+        HashMap<String, List> hash = new HashMap<>();
         
+        // Lettura ItemExtra
+        List<ItemExtra> listIE = new ArrayList<>();        
+        configFile.getConfigurationSection("item-extra").getKeys(false).forEach((String i) -> {
+            String index = "item-extra."+i;
+            
+            String material = configFile.getString(index+".material");
+            short shortnum = Short.valueOf(configFile.getString(index+".short"));
+            String displayName = configFile.getString(index+".displayname").replace("&", "§");
+            
+            List<String> lores = new ArrayList<>();
+            configFile.getStringList(index+".lore").forEach((String lore) -> lores.add(lore.replace("&", "§")));
+            
+            listIE.add(new ItemExtra(
+                    i,
+                    material,
+                    shortnum,
+                    displayName,
+                    lores
+            ));
+            
+        });
+        
+        hash.put("ItemExtra", listIE);
+        
+        // Lettura Drugs
+        List<Drug> listDR = new ArrayList<>();
         configFile.getConfigurationSection("drugs").getKeys(false).forEach((String i) -> {
             String index = "drugs." + i;
             
@@ -91,14 +119,21 @@ public class ConfigurationFile {
             configFile.getStringList(index+".lore").forEach((String lore) -> lores.add(lore.replace("&", "§")));
             List<String> effects = configFile.getStringList(index+".effects");
             List<String> dependencies = configFile.getStringList(index+".dependencies");
-
+            
+            List<ItemExtra> dependenciesExtra = new ArrayList<>();
+            configFile.getStringList(index+".dependencies-extra").forEach((String depex) -> {
+                listIE.forEach((ItemExtra ie) -> {
+                    if(ie.getId().equals(depex)) dependenciesExtra.add(ie);
+                });
+             });
+            
             String particle = configFile.getString(index+".particle");       
             String sound = configFile.getString(index+".sound");            
             int sellPrice = Integer.parseInt(configFile.getString(index+".sell-price"));
             int buyPrice = Integer.parseInt(configFile.getString(index+".buy-price"));
             String message = configFile.getString(index+".message");
             
-            list.add(new Drug(
+            listDR.add(new Drug(
                     i,
                     displayName,
                     material,
@@ -107,6 +142,7 @@ public class ConfigurationFile {
                     effects,
                     particle,
                     dependencies,
+                    dependenciesExtra,
                     sound,
                     sellPrice,
                     buyPrice,
@@ -114,12 +150,10 @@ public class ConfigurationFile {
             ));
         });
         
-        return list;
-    }
-    
-    public List<Seed> getSeedElements() {
-        List<Seed> list = new ArrayList<>();
+        hash.put("Drug", listDR);
         
+        // Lettura Seeds
+        List<Seed> listSE = new ArrayList<>();
         configFile.getConfigurationSection("seeds").getKeys(false).forEach((String i) -> {
             String index = "seeds."+i;
             
@@ -130,7 +164,7 @@ public class ConfigurationFile {
             List<String> lores = new ArrayList<>();
             configFile.getStringList(index+".lore").forEach((lore) -> lores.add(lore.replace("&", "§")));
             
-            list.add(new Seed(
+            listSE.add(new Seed(
                     i, 
                     material,
                     shortnum,
@@ -139,45 +173,55 @@ public class ConfigurationFile {
             ));
         });
         
-        return list;
-    }
-    
-    public List<CustomDrop> getCustomDrops() {
-        List<CustomDrop> list = new ArrayList<>();
+        hash.put("Seed", listSE);
         
+        // Lettura CustomDrop
+        List<CustomDrop> listCD = new ArrayList<>();        
         configFile.getConfigurationSection("custom-drops").getKeys(false).forEach((String i) -> {
             String index = "custom-drops."+i;
             
             Boolean overrideDrop = Boolean.valueOf(configFile.getString(index+".override-drops"));
             
+            List<ItemExtra> ieList = new ArrayList();
+            configFile.getStringList(index+".ie-drop").forEach((String iextra) -> {
+                listIE.forEach((ItemExtra ie) -> {
+                    if(iextra.equalsIgnoreCase(ie.getId())) ieList.add(ie);
+                });
+            });
+            
             List<Drug> drugList = new ArrayList();
             configFile.getStringList(index+".drugs-drop").forEach((String nameDrug) -> {
-                DrugsManager.getManager().getDrugsList().forEach((Drug d) -> {
+                listDR.forEach((Drug d) -> {
                     if(nameDrug.equalsIgnoreCase(d.getId())) drugList.add(d);
                 });
             });
 
             List<Seed> seedList = new ArrayList();
             configFile.getStringList(index+".seeds-drop").forEach((String nameSeed) -> {     
-                DrugsManager.getManager().getSeedsList().forEach((Seed s) -> {
+                listSE.forEach((Seed s) -> {
                     if(nameSeed.equalsIgnoreCase(s.getId())) seedList.add(s);
                 });
             });
 
+            Short ieChance = Short.valueOf(configFile.getString(index+".ie-drop-chance"));
             Short drugsChance = Short.valueOf(configFile.getString(index+".drug-drop-chance"));
             Short seedsChance = Short.valueOf(configFile.getString(index+".seed-drop-chance"));
                     
-            list.add(new CustomDrop(
+            listCD.add(new CustomDrop(
                     i, 
                     overrideDrop,
+                    ieList,
                     drugList,
                     seedList,
+                    ieChance,
                     drugsChance,
                     seedsChance
             ));
             
         });
         
-        return list;        
+        hash.put("CustomDrop", listCD);
+        
+        return hash;        
     }
 }
