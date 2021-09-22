@@ -3,15 +3,13 @@ package perecraft.drugscore.manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import perecraft.drugscore.domain.CustomDrop;
 import perecraft.drugscore.domain.Drug;
+import perecraft.drugscore.domain.ItemExtra;
 import perecraft.drugscore.domain.Seed;
 
 /**
@@ -22,12 +20,14 @@ public class DrugsManager {
 
     private static DrugsManager dm = null;
     
-    private HashMap<String, Drug> drugsList = new HashMap<>();
-    private HashMap<String, Seed> seedsList = new HashMap<>();
-    private HashMap<EntityType, CustomDrop> cdList = new HashMap<>();
+    private HashMap<String, ItemExtra> ieList;
+    private HashMap<String, Drug> drugsList;
+    private HashMap<String, Seed> seedsList;
+    private HashMap<EntityType, CustomDrop> cdList;
     private String warningMessage;
 
     private DrugsManager() {
+        ieList = new HashMap<>();
         drugsList = new HashMap<>();
         seedsList = new HashMap<>();
         cdList = new HashMap<>();
@@ -44,12 +44,25 @@ public class DrugsManager {
      * Metodo che elimina il DrugManager
      */
     public void destroy() {
+        this.ieList = null;
         this.drugsList = null;
         this.seedsList = null;
         this.cdList = null;
         this.warningMessage = null;
         
         this.dm = null;
+    }
+    
+    public void giveItemExtra(CommandSender sender, Player target, String itemArg, int amount) {
+
+        if(!ieList.containsKey(itemArg.toLowerCase())) {
+            sender.sendMessage("§4Errore: §cItem extra non valido!");
+            return;
+        }
+        
+        ieList.get(itemArg.toLowerCase()).giveItem(target, amount);
+        sender.sendMessage("§aGivvato x" + amount + itemArg + "§7 a §e" + target.getName());
+
     }
     
     public void giveDrug(CommandSender sender, Player target, String drugArg, int amount) {
@@ -74,6 +87,17 @@ public class DrugsManager {
         seedsList.get(seedArg.toLowerCase()).giveItem(target, amount);
         sender.sendMessage("§aGivvato x" + amount + seedArg + "§7 a §e" + target.getName());
 
+    }
+    
+    public List<ItemExtra> getItemExtraList() {
+        return new ArrayList<>(ieList.values());
+    }
+
+    public void setItemExtraList(List<ItemExtra> lists) {
+        lists.forEach((ItemExtra ie) -> {
+            if(!ieList.containsKey(ie.getId()))
+                ieList.put(ie.getId(), ie);
+        });
     }
     
     public List<Drug> getDrugsList() {
